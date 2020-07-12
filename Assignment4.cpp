@@ -7,9 +7,11 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <list>
 using namespace std;
 
 int comparisons, exchanges, space_used;
+
 
 vector<int> get_sorted_vec() {
     vector <int> vec(10000);
@@ -122,6 +124,30 @@ void insertion_sort(std::vector <int>& num) {
             num[i + 1] = key;    //Put key into its proper location
     }
 }
+void insertion_sort_list(int arr[], int size ) {
+   
+    
+    int temp,i;
+    
+    for (int j = 1; j < size; j++) {
+        
+        
+        temp = arr[j];
+        i = j - 1;
+        comparisons++;
+        cout << "i: " << i << " arr[i]: " << arr[i] << " temp: " << temp << endl;
+        while (i >= 0 && arr[i] > temp) {
+            exchanges++;
+            arr[i + 1] = arr[i];
+            i = i - 1;
+        }
+        arr[i + 1] = temp;
+
+    }
+    
+    
+}
+
 
 void merge(std::vector<int>& array, std::vector<int>& result, int lowPointer, int highPointer, int upperBound) {
     int j = 0; 
@@ -170,30 +196,44 @@ int partition(int first, int last, std::vector<int>& arr) {
     int down = last-1;
     do {
         while ((up != last) && !(arr[first] < arr[up])) {
+            comparisons++;
             ++up;
         }
         while (arr[first] < arr[down]) {
+            comparisons++;
             --down;
         }
         if (up < down) {
             // if up is to the left of down,
+            exchanges++;
             swap(arr[up], arr[down]);
         }
     } while (up < down); // Repeat while up is left of down.
     
+    exchanges++;
     swap(arr[down], arr[first]);
     return down;
 }
 void sort_median(std::vector<int>& arr, int first, int last){
-    bool exchanges = true;
+    bool exchanges_made = true;
     int middle = (first + last) / 2;
-    if (arr[first]>arr[middle])
+    comparisons++;
+    if (arr[first] > arr[middle]) {
+        exchanges++;
         swap(arr[first], arr[middle]);
-    if (arr[middle] > arr[last])
+    }
+    comparisons++;
+    if (arr[middle] > arr[last]) {
+        exchanges++;
         swap(arr[middle], arr[last]);
-    if (arr[first] > arr[middle])
+    }
+    comparisons++;
+    if (arr[first] > arr[middle]) {
+        exchanges++;
         swap(arr[first], arr[middle]);//swap the middle with the left 
+    }
     swap(arr[middle], arr[first]);
+    exchanges++;
 }
 
 int partitionB(int first, int last, std::vector<int>& arr) {// Start up and down at either end of the sequence.
@@ -205,18 +245,21 @@ int partitionB(int first, int last, std::vector<int>& arr) {// Start up and down
     do 
     {
         while ((up != last - 1) && !(arr[mid] < arr[up])) {
+            comparisons++;
             ++up;
         }
         while (arr[mid] < arr[down]) {
+            comparisons++;
             --down;
         }
         if (up < down) {// if up is to the left of down,
+            exchanges++;
             swap(arr[up], arr[down]);
         }
 } while (up < down); // Repeat while up is left of down.
-
-    swap(arr[mid], arr[down]);
     
+    swap(arr[mid], arr[down]);
+    exchanges++;
     return down;
 
 }void middle_quick_sort(int first, int last, std::vector<int>& arr) {
@@ -256,10 +299,11 @@ int main()
     vector<int> sorted_vec= get_sorted_vec();
     vector<int> random_vec = get_random_vec();
     vector<int> reversed_vec = get_reversed_vec();
+
     
     //---------------------------------------------------------------------------------------------------------------------
     // Selection Sort
-    /*comparisons = exchanges = space_used = 0;
+    comparisons = exchanges = space_used = 0;
     selection_sort(random_vec);
     cout << " Selection Sort: Random Array " << endl;
     cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;
@@ -274,9 +318,9 @@ int main()
     cout << " Selection Sort: Reversed Array " << endl;
     cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;
    // --------------------------------------------------------------------------------------------------------------------------
-    */
     
-    /*
+    
+    
     //--------------------------------------------------------------------- ----------------------------------------------------
     //Bubble Sort
     comparisons = exchanges = space_used = 0;
@@ -293,11 +337,11 @@ int main()
     bubble_sort(reversed_vec);
     cout << " Bubble Sort: Reversed Array " << endl;
     cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;
-   //---------------------------------------------------------------------------------------------------------------------
-    */
+  // ---------------------------------------------------------------------------------------------------------------------
+    
 //---------------------------------------------------------------------------------------------------------------------
     //Insertion Sort
-    /*comparisons = exchanges = space_used = 0;
+    comparisons = exchanges = space_used = 0;
     insertion_sort(random_vec);
     cout << " Insertion Sort: Random Array " << endl;
     cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;
@@ -310,11 +354,11 @@ int main()
     comparisons = exchanges = space_used = 0;
     insertion_sort(reversed_vec);
     cout << " Insertion Sort: Reversed Array " << endl;
-    cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;*/
+    cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;
 
     //---------------------------------------------------------------------------------------------------------------------
     //Shell Sort
-    /*comparisons = exchanges = space_used = 0;
+    comparisons = exchanges = space_used = 0;
     ShellSort(random_vec);
     cout << " shell Sort: Random Array " << endl;
     cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;
@@ -327,11 +371,11 @@ int main()
     comparisons = exchanges = space_used = 0;
     ShellSort(reversed_vec);
     cout << " shell Sort: Reversed Array " << endl;
-    cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;*/
+    cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;
 
     //---------------------------------------------------------------------------------------------------------------------
     //merge Sort
-  /*  comparisons = exchanges = space_used = 0;
+    comparisons = exchanges = space_used = 0;
     
     mergeSort(random_vec);
     cout << " merge Sort: Random Array " << endl;
@@ -345,7 +389,82 @@ int main()
     comparisons = exchanges = space_used = 0;
     mergeSort(reversed_vec);
     cout << " merge Sort: Reversed Array " << endl;
-    cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;*/
+    cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;
+
+    //---------------------------------------------------------------------------------------------------------------------
+
+    //quick Sort (original)
+    comparisons = exchanges = space_used = 0;
+
+    quick_sort_wrapper(random_vec);
+    cout << " quick Sort: Random Array " << endl;
+    cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;
+
+    comparisons = exchanges = space_used = 0;
+    quick_sort_wrapper(sorted_vec);
+    cout << " quick Sort: Sorted Array " << endl;
+    cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;
+
+    comparisons = exchanges = space_used = 0;
+    quick_sort_wrapper(reversed_vec);
+    cout << " quick Sort: Reversed Array " << endl;
+    cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;
+
+    //---------------------------------------------------------------------------------------------------------------------
+    
+    //quick Sort (improved)
+    comparisons = exchanges = space_used = 0;
+
+    middle_quick_sort_wrapper(random_vec);
+    cout << " quick Sort: Random Array " << endl;
+    cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;
+
+    comparisons = exchanges = space_used = 0;
+    middle_quick_sort_wrapper(sorted_vec);
+    cout << " quick Sort: Sorted Array " << endl;
+    cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;
+
+    comparisons = exchanges = space_used = 0;
+    middle_quick_sort_wrapper(reversed_vec);
+    cout << " quick Sort: Reversed Array " << endl;
+    cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;
+
+    //---------------------------------------------------------------------------------------------------------------------
+    
+    //Insertion Sort (WITH LISTS!!!)
+int random_list[10000];
+
+
+for (int x = 0; x < 10000; x++) {
+    random_list[x] = (rand() % 10000 + 1);
+}
+    comparisons = exchanges = space_used = 0;
+    insertion_sort_list(random_list,10000);
+    cout << " insertion sort list: random array " << endl;
+    cout << "comparisons: " << comparisons << " exchanges: " << exchanges << " space: " << space_used << endl;
+    
+
+    int sorted_list[10000];
+
+    for (int x = 0; x < 10000; x++) {
+        sorted_list[x] = x;
+    }
+    comparisons = exchanges = space_used = 0;
+    insertion_sort_list(sorted_list,10000);
+    cout << " insertion sort list: sorted array " << endl;
+    cout << "comparisons: " << comparisons << " exchanges: " << exchanges << " space: " << space_used << endl;
+
+    int reversed_list[10000];
+
+    for (int x = 9999; x >= 0; x--) {
+        reversed_list[9999-x] = x;
+    }
+
+
+    comparisons = exchanges = space_used = 0;
+    insertion_sort_list(reversed_list,10000);
+    cout << " Insertion Sort List: Reversed Array " << endl;
+    cout << "Comparisons: " << comparisons << " Exchanges: " << exchanges << " Space: " << space_used << endl;
 
     //---------------------------------------------------------------------------------------------------------------------
 }
